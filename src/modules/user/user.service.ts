@@ -3,7 +3,6 @@ import { IUserCreateDto} from './dto/create-user.dto';
 import { IUserUpdateDto } from './dto/update-user.dto';
 import { UserEntity } from './entities/user.entity';
 import { UserRepository } from './user.repository';
-import { v4 } from 'uuid';
 import { ResData } from 'src/lib/resData';
 import { IUserService } from './interfaces/user.service';
 import { ID } from 'src/common/types';
@@ -18,12 +17,12 @@ export class UserService implements IUserService{
       const data = await this.userRepository.create(
         dto
       )    
-      return new ResData(201, "created", data)
+      return new ResData<UserEntity>(201, "created", data)
     }
   
     async findAll() {
       const data = await this.userRepository.findAll()
-      return new ResData(200, "success", data)
+      return new ResData<Array<UserEntity>>(200, "success", data)
     }
   
     async findById(id: ID) {
@@ -31,7 +30,7 @@ export class UserService implements IUserService{
       if (!data) {
         throw new CustomError(404, "user not found!")
       }
-      return new ResData(200, "success", data)
+      return new ResData<UserEntity>(200, "success", data)
     }
   
     async update(id: ID, dto: IUserUpdateDto) {
@@ -40,13 +39,13 @@ export class UserService implements IUserService{
         id,
         dto
       )
-      return new ResData(200, "success", data)
+      return new ResData<UserEntity>(200, "success", data)
     }
   
     async delete(id: string): Promise<ResData<UserEntity>> {
       await this.findById(id)
       await this.userRepository.delete(id)
-      return new ResData(200, "deleted")
+      return new ResData<UserEntity>(200, "deleted")
     }
 
     async email(email:string):Promise<UserEntity | undefined>{
@@ -56,5 +55,15 @@ export class UserService implements IUserService{
         throw new CustomError(400, "email existing!")
       }
       return data
+    }
+
+    async findByEmail(email: string): Promise<ResData<UserEntity | undefined>> {
+        const data = await this.userRepository.findByEmail(email)
+
+        if(!data){
+          throw new CustomError(404, "user not found")
+        }
+
+        return new ResData<UserEntity>(200, "user find all", data)
     }
 }

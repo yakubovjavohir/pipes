@@ -11,4 +11,5 @@ export interface IUserService {
   delete(id:ID):Promise<ResData<UserEntity>>;
   findById(id:ID):Promise<ResData<UserEntity | undefined>>
   email(email:string):Promise<UserEntity | undefined>
+  findByEmail(email:string):Promise<ResData<UserEntity | undefined>>
 }

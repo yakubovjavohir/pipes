@@ -1,10 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, UseInterceptors, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { IUserCreateDto } from './dto/create-user.dto';
 import { IUserUpdateDto } from './dto/update-user.dto';
 import { ID } from 'src/common/types';
 import { LoggingInterceptor } from 'src/common/interceptors';
+import { JwtAuthGuard } from 'src/middleware/guard.middlware';
+import { RolesGuard } from '../../common/decorator/role.guard';
+import { Roles } from '../../common/decorator/role';
 @Controller('user')
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('admin')
 @UseInterceptors(LoggingInterceptor)
 export class UserController {
   constructor(private readonly userService: UserService) {}

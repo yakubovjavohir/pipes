@@ -19,4 +19,8 @@ import { Role } from "../../../common/enums";
     findById(id:ID):Promise<UserEntity | undefined>
 
     email(email:string):Promise<UserEntity | undefined>
+
+    findByEmail(email:string):Promise<UserEntity | undefined>
+
+
   }

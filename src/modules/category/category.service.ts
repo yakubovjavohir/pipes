@@ -12,7 +12,7 @@ import { CustomError } from 'src/lib/customError';
 export class CategoryService implements ICategoryService{
   constructor(
     @Inject('ICategoryRepository') 
-    private readonly categoryRepository: CategoryRepository, // ✅ To‘g‘ri interfeys ishlatildi
+    private readonly categoryRepository: CategoryRepository, 
   ) {}
   async create(dto: ICategoryCreateDto): Promise<ResData<CategoryEntity>> {
     await this.name(dto.name)

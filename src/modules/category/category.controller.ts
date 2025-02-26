@@ -1,11 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UsePipes, ValidationPipe, UseGuards } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { ICategoryCreateDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { ID } from 'src/common/types';
 import { LoggingInterceptor } from 'src/common/interceptors';
+import { JwtAuthGuard } from 'src/middleware/guard.middlware';
 
 @Controller('category')
+@UseGuards(JwtAuthGuard)
 @UseInterceptors(LoggingInterceptor)
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}

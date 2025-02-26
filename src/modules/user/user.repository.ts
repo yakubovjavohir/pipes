@@ -1,4 +1,3 @@
-import { Role } from "src/common/enums";
 import { UserEntity } from "./entities/user.entity";
 import { IUserRepository } from "./interfaces/user.repository";
 import { BaseRepository } from "src/common/base/postgresSQL.base";
@@ -65,4 +64,12 @@ export class UserRepository extends BaseRepository implements IUserRepository{
         
     }
 
+    async findByEmail(email: string): Promise<UserEntity | undefined> {
+        const data = await this.single<UserEntity, any>(
+            'select * from users where email=$1',
+            email
+        )
+
+        return data
+    }
 }
