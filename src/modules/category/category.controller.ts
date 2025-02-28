@@ -4,7 +4,7 @@ import { ICategoryCreateDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { ID } from 'src/common/types';
 import { LoggingInterceptor } from 'src/common/interceptors';
-import { JwtAuthGuard } from 'src/middleware/guard.middlware';
+import { JwtAuthGuard } from '../../common/guard/guard.routes';
 
 @Controller('category')
 @UseGuards(JwtAuthGuard)

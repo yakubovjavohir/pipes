@@ -1,5 +1,4 @@
   import { ID } from "src/common/types";
-import { Role } from "../../../common/enums";
   import { UserEntity } from "../entities/user.entity";
 
   export interface IUserRepository {
