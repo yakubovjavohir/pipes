@@ -5,6 +5,7 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 import { ID } from 'src/common/types';
 import { LoggingInterceptor } from 'src/common/interceptors';
 import { JwtAuthGuard } from '../../common/guard/guard.routes';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('category')
 @UseGuards(JwtAuthGuard)
@@ -12,6 +13,7 @@ import { JwtAuthGuard } from '../../common/guard/guard.routes';
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
+  @ApiBearerAuth()
   @Post()
   @UsePipes(new ValidationPipe())
   async create(@Body() dto: ICategoryCreateDto) {
@@ -19,6 +21,7 @@ export class CategoryController {
     return resdata
   }
 
+  @ApiBearerAuth()
   @Get()
   async findAll() {
     return await this.categoryService.findAll();

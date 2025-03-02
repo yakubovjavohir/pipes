@@ -1,6 +1,6 @@
 import {Pool} from "pg"
 import { configDto } from "../config"
-import { CustomError } from "src/lib/customError";
+import { HttpException, HttpStatus } from "@nestjs/common";
 
 const pool:Pool = new Pool({
     connectionString:configDto.DB_URL
@@ -21,7 +21,7 @@ export abstract class BaseRepository {
         const message =
           error instanceof Error ? error.message : "INTERNAL SERVER ERROR";
   
-        throw new CustomError(500, message);
+        throw new HttpException(message, HttpStatus.INTERNAL_SERVER_ERROR)
       } finally {
         connection.release();
       }
@@ -40,7 +40,8 @@ export abstract class BaseRepository {
         const message =
           error instanceof Error ? error.message : "INTERNAL SERVER ERROR";
   
-        throw new CustomError(500, message);
+          throw new HttpException(message, HttpStatus.INTERNAL_SERVER_ERROR)
+
       } finally {
         connection.release();
       }

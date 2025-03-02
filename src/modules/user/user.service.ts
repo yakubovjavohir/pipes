@@ -6,14 +6,14 @@ import { UserRepository } from './user.repository';
 import { ResData } from 'src/lib/resData';
 import { IUserService } from './interfaces/user.service';
 import { ID } from 'src/common/types';
-import { CustomError } from 'src/lib/customError';
+import { EmailExist, UserNotFound } from './exception';
 @Injectable()
 export class UserService implements IUserService{
   constructor(
     @Inject("IUserRepository") private readonly userRepository:UserRepository
   ){}
     async create(dto: IUserCreateDto) {
-
+      await this.email(dto.email)
       const data = await this.userRepository.create(
         dto
       )    
@@ -28,7 +28,7 @@ export class UserService implements IUserService{
     async findById(id: ID) {
       const data = await this.userRepository.findById(id)
       if (!data) {
-        throw new CustomError(404, "user not found!")
+        throw new UserNotFound()
       }
       return new ResData<UserEntity>(200, "success", data)
     }
@@ -52,7 +52,7 @@ export class UserService implements IUserService{
       const data = await this.userRepository.email(email)
       
       if(data){
-        throw new CustomError(400, "email existing!")
+        throw new EmailExist()
       }
       return data
     }
@@ -61,7 +61,7 @@ export class UserService implements IUserService{
         const data = await this.userRepository.findByEmail(email)
 
         if(!data){
-          throw new CustomError(404, "user not found")
+          throw new UserNotFound()
         }
 
         return new ResData<UserEntity>(200, "user find all", data)

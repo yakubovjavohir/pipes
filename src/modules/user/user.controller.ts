@@ -7,6 +7,7 @@ import { LoggingInterceptor } from 'src/common/interceptors';
 import { JwtAuthGuard } from '../../common/guard/guard.routes';
 import { RolesGuard } from '../../common/decorator/role.guard';
 import { Roles } from '../../common/decorator/role';
+import { ApiBearerAuth } from '@nestjs/swagger';
 @Controller('user')
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles('admin')
@@ -14,6 +15,7 @@ import { Roles } from '../../common/decorator/role';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @ApiBearerAuth()
   @Post()
   @UsePipes(new ValidationPipe())
   async create(@Body() dto: IUserCreateDto) {
@@ -22,6 +24,7 @@ export class UserController {
     return resdata
   }
 
+  @ApiBearerAuth()
   @Get()
   async findAll() {
     const resdata = await this.userService.findAll()
@@ -41,6 +44,7 @@ export class UserController {
     return data
   }
 
+  @ApiBearerAuth()
   @Delete(':id')
   async remove(@Param('id') id: ID) {
       const data = await this.userService.delete(id)

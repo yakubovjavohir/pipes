@@ -6,7 +6,7 @@ import { ID } from 'src/common/types';
 import { ResData } from 'src/lib/resData';
 import { CategoryEntity } from './entities/category.entity';
 import { CategoryRepository } from './category.repository';
-import { CustomError } from 'src/lib/customError';
+import { CategoryNotFound, NameExist } from './exception';
 
 
 export class CategoryService implements ICategoryService{
@@ -36,14 +36,14 @@ export class CategoryService implements ICategoryService{
   async findById(id: ID): Promise<ResData<CategoryEntity | undefined>> {
     const data = await this.categoryRepository.findById(id)
     if (!data) {
-      throw new CustomError(404, "category not fount")
+      throw new CategoryNotFound()
     }
     return new ResData(200, "success", data)
   }
   async name(name: string): Promise<void> {
     const data = await this.categoryRepository.name(name)
     if(data){
-      throw new CustomError(404, "category existing!")
+      throw new NameExist()
     }
   }
   

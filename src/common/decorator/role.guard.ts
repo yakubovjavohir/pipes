@@ -1,6 +1,11 @@
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext, HttpException, HttpStatus } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { CustomError } from 'src/lib/customError';
+
+class YouAreNotAcc extends HttpException {
+  constructor(){
+    super("you are not acses", HttpStatus.FORBIDDEN)
+  }
+}
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -19,7 +24,7 @@ export class RolesGuard implements CanActivate {
     const bool =  user?.role === requiredRole;
     
     if(!bool){
-      throw new CustomError(403, "you are not acses")
+      throw new YouAreNotAcc()
     }
     return bool
     
